@@ -9,9 +9,6 @@ namespace AuthServer
 		[Key]
 		public Guid userId { get; set; }
 		[Required]
-		public string accessSecret { get; set; }
-		public int lastJoinedServer { get; set; }
-		public string lastJoinedIPAddress { get; set; }
-		public DateTimeOffset regTime { get; set; }
+		public string accessSecret { get; set; } = string.Empty;
 	}
 }

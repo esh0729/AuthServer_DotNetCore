@@ -7,11 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 var configBuilder = new ConfigurationBuilder().AddJsonFile("appsettings.json");
 IConfiguration configuration = configBuilder.Build();
 builder.Services.Configure<AppConfig>(configuration);
-AppConfig appConfig = new AppConfig();
-configuration.GetSection("AppConfig").Bind(appConfig);
+configuration.GetSection("AppConfig").Bind(AppConfig.instance);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddDbContext<UserDbContext>(opt => opt.UseSqlServer(AppConfig.instance.DbConnectionString));
 
 var app = builder.Build();
 

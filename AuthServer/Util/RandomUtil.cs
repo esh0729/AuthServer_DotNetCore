@@ -1,0 +1,22 @@
+﻿namespace AuthServer
+{
+	public class RandomUtil
+	{
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Static member variables
+
+		private static Random s_random = new Random();
+		private static Object m_syncObject = new object();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Member functions
+
+		public static int Next(int nMaxValue)
+		{
+			lock (m_syncObject)
+			{
+				return s_random.Next(nMaxValue);
+			}
+		}
+	}
+}
