@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Text.Json;
 
 namespace AuthServer
 {
@@ -16,6 +17,17 @@ namespace AuthServer
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Properties
 
+		//
+		// System Data
+		//
+
+		public DbSet<SystemSetting> systemSettings { get; set; }
+		public DbSet<GameServer> gameServers { get; set; }
+
+		//
+		// Transaction Data
+		//
+
 		public DbSet<User> users { get; set; }
 		public DbSet<GuestUser> guestUsers { get; set; }
 
@@ -23,7 +35,7 @@ namespace AuthServer
 		// Member functions
 
 		//
-		// Login함수 비동기로 호출 필요
+		// Login
 		//
 
 		public string Login(Guid id)
@@ -98,6 +110,30 @@ namespace AuthServer
 				if (trans != null)
 					trans.Rollback();
 			}
+		}
+
+		//
+		// Systeminfo
+		//
+
+		public string SystemInfo()
+		{
+			List<SystemSetting> systemSettingList = systemSettings.ToList();
+			if (systemSettingList.Count <= 0)
+				throw new Exception("Not exist SystemSetting");
+
+			List<GameServer> gameServerList = gameServers.ToList();
+
+			SystemInfoTemplate template = new SystemInfoTemplate();
+			template.systemSetting = systemSettingList.First();
+			template.gameServers = new GameServer[gameServerList.Count];
+
+			for (int i = 0; i < gameServerList.Count; i++)
+			{
+				template.gameServers[i] = gameServerList[i];
+			}
+
+			return JsonSerializer.Serialize(template);
 		}
 	}
 }

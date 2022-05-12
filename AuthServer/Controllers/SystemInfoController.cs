@@ -6,7 +6,7 @@ namespace AuthServer
 {
 	[Route("auth/[controller]")]
 	[ApiController]
-	public class LoginController : Controller
+	public class SystemInfoController : Controller
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Member variables
@@ -16,7 +16,7 @@ namespace AuthServer
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Constructors
 
-		public LoginController(UserDbContext userDbContext)
+		public SystemInfoController(UserDbContext userDbContext)
 		{
 			m_userDbContext = userDbContext;
 		}
@@ -24,14 +24,14 @@ namespace AuthServer
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Member functions
 
-		[HttpPost]
-		public async Task<ResponseTemplate> Post(LoginTemplate template)
+		[HttpGet]
+		public async Task<ResponseTemplate> Get()
 		{
-			string sResponse = string.Empty; ;
+			string sResponse = string.Empty;
 
 			try
 			{
-				sResponse = await Task.Run<string>(() => m_userDbContext.Login(template.id));
+				sResponse = await Task.Run<string>(() => m_userDbContext.SystemInfo());
 			}
 			catch
 			{
