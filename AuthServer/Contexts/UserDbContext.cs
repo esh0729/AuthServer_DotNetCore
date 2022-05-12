@@ -23,7 +23,7 @@ namespace AuthServer
 		// Member functions
 
 		//
-		// 데이터베이스 동기 호출이므로 Login함수 비동기로 호출 필요
+		// Login함수 비동기로 호출 필요
 		//
 
 		public string Login(Guid id)
@@ -38,15 +38,24 @@ namespace AuthServer
 				// 사용자 조회
 				//
 
-				GuestUser? guestUser = guestUsers.Find(id);
-				if (guestUser != null)
+				List<User> result;
+
 				{
-					User? user = users.Find(guestUser.userId);
-					if (user != null)
-						accessToken.Init(user);
-					else
-						throw new Exception("Not Exist User");
-				}
+					var query = from guestUser in Set<GuestUser>()
+								join user in Set<User>()
+									on guestUser.userId equals user.userId
+								where guestUser.guestId == id
+								select user;
+
+					result = query.ToList();
+				}		
+
+				//
+				//
+				//
+
+				if (result.Count() > 0)
+					accessToken.Init(result.First());
 				else
 				{
 					//
