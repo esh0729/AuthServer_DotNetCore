@@ -14,8 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<UserDbContext>(opt => opt.UseSqlServer(AppConfig.instance.DbConnectionString));
 
 var app = builder.Build();
-//app.Urls.Add("http://172.21.80.177:" + AppConfig.instance.ServicePort);
-//app.Urls.Add("http://localhost:" + AppConfig.instance.ServicePort);
+
+if (!app.Environment.IsDevelopment())
+{
+	app.Urls.Add("http://172.21.42.55:" + AppConfig.instance.ServicePort);
+	app.Urls.Add("http://localhost:" + AppConfig.instance.ServicePort);
+}
 
 // Configure the HTTP request pipeline.
 //app.UseHsts();

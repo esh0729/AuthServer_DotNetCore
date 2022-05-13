@@ -1,4 +1,6 @@
-﻿namespace AuthServer
+﻿using System.Security.AccessControl;
+
+namespace AuthServer
 {
 	public class MetaDataManager
 	{
@@ -23,13 +25,17 @@
 		{
 			sMetaData = string.Empty;
 
-			string sPath = AppDomain.CurrentDomain.BaseDirectory + @"\Meta";
-			DirectoryInfo di = new DirectoryInfo(sPath);
+			string sPath = AppDomain.CurrentDomain.BaseDirectory + "Meta";
 
-			if (!di.Exists)
+			if (!Directory.Exists(sPath))
 				return false;
 
-			string sFilePath = sPath + @"\" + nVersion + ".Meta";
+			string sFilePath;
+
+			if (AppConfig.instance.IsUnix)
+				sFilePath = sPath + @"/" + nVersion + ".Meta";
+			else
+				sFilePath = sPath + @"\" + nVersion + ".Meta";
 
 			if (!File.Exists(sFilePath))
 				return false;
@@ -54,13 +60,17 @@
 
 		private static void WirteMetaData(int nVersion, string sMetaData)
 		{
-			string sPath = AppDomain.CurrentDomain.BaseDirectory + @"\Meta";
-			DirectoryInfo di = new DirectoryInfo(sPath);
+			string sPath = AppDomain.CurrentDomain.BaseDirectory + "Meta";
 
-			if (!di.Exists)
-				di.Create();
+			if (!Directory.Exists(sPath))
+				Directory.CreateDirectory(sPath);
 
-			string sFilePath = sPath + @"\" + nVersion + ".Meta";
+			string sFilePath;
+
+			if (AppConfig.instance.IsUnix)
+				sFilePath = sPath + @"/" + nVersion + ".Meta";
+			else
+				sFilePath = sPath + @"\" + nVersion + ".Meta";
 
 			if (File.Exists(sFilePath))
 				File.Delete(sFilePath);

@@ -1,4 +1,7 @@
-﻿namespace AuthServer
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AuthServer
 {
 	public class AppConfig
 	{
@@ -15,6 +18,9 @@
 		public string DbConnectionString { get; set; } = string.Empty;
 		public string AccessTokenSecurityKey { get; set; } = string.Empty;
 		public int ServicePort { get; set; }
+
+		[NotMapped]
+		public bool IsUnix => Environment.OSVersion.Platform == PlatformID.Unix;
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Static member variables
