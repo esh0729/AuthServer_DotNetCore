@@ -182,7 +182,6 @@ namespace AuthServer
 			//
 
 			int nMetaDataVersion = systemSettingList.First().metadataVersion;
-			systemSettingList.Clear();
 
 			return MetaDataManager.GetMetaData(nMetaDataVersion, this);
 		}

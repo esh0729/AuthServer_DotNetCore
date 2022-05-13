@@ -35,10 +35,10 @@ namespace AuthServer
 			}
 			catch (Exception ex)
 			{
-				return new ResponseTemplate { isSuccess = false, message = ex.Message };
+				return new ResponseTemplate { returnCode = 1, error = ex.Message };
 			}
 
-			return new ResponseTemplate { isSuccess = true, response = sResponse };
+			return new ResponseTemplate { returnCode = 0, response = sResponse };
 		}
 	}
 }

@@ -35,10 +35,10 @@ namespace AuthServer
 			}
 			catch
 			{
-				return new ResponseTemplate { isSuccess = false };
+				return new ResponseTemplate { returnCode = 1 };
 			}
 
-			return new ResponseTemplate { isSuccess = true, response = sResponse };
+			return new ResponseTemplate { returnCode = 0, response = sResponse };
 		}
 	}
 }
