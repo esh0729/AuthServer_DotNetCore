@@ -72,11 +72,42 @@ namespace AuthServer
 				List<User> result;
 
 				{
-					var query = from guestUser in Set<GuestUser>()
-								join user in Set<User>()
-									on guestUser.userId equals user.userId
-								where guestUser.guestId == id
-								select user;
+					//var query = from guestUser in guestUsers
+					//			join user in users
+					//				on guestUser.userId equals user.userId
+					//			where guestUser.guestId == id
+					//			select user;
+
+					//result = query.ToList();
+
+					//var query = guestUsers.Join(users,
+					//							guestUser => guestUser.userId,
+					//							user => user.userId,
+					//							(guestUser, user) =>
+					//							new
+					//							{
+					//								guestUserId = guestUser.guestId,
+					//								userId = user.userId,
+					//								accessSecret = user.accessSecret
+					//							}).Where(guestUser => guestUser.guestUserId == id).
+					//							Select(result =>
+					//							new User
+					//							{
+					//								userId = result.userId,
+					//								accessSecret = result.accessSecret
+					//							});
+
+					var query = guestUsers.Where(guestUser => guestUser.guestId == id).
+											Join(users,
+												guestUser => guestUser.userId,
+												user => user.userId,
+												(guestUser, user) =>
+												new User
+												{
+													userId = user.userId,
+													accessSecret = user.accessSecret
+												});
+
 
 					result = query.ToList();
 				}		
