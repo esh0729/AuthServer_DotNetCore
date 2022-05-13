@@ -14,6 +14,7 @@
 
 		public string DbConnectionString { get; set; } = string.Empty;
 		public string AccessTokenSecurityKey { get; set; } = string.Empty;
+		public int ServicePort { get; set; }
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Static member variables

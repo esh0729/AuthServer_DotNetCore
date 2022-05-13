@@ -31,8 +31,27 @@ namespace AuthServer
 		public DbSet<User> users { get; set; }
 		public DbSet<GuestUser> guestUsers { get; set; }
 
+		//
+		// Resource Data
+		//
+		#region Resource Data
+		public DbSet<GameConfig> gameConfigs { get; set; }
+		public DbSet<Continent> continents { get; set; }
+		public DbSet<Character> characters { get; set; }
+		public DbSet<CharacterAction> characterActions { get; set; }
+		#endregion
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Member functions
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			//
+			// 다중키 설정
+			//
+
+			modelBuilder.Entity<CharacterAction>().HasKey(p => new { p.characterId, p.actionId });
+		}
 
 		//
 		// Login
@@ -104,7 +123,7 @@ namespace AuthServer
 			finally
 			{
 				//
-				// 테이블 삽입중 에러 났을 경우 롤백
+				// 작업중 에러 났을 경우 롤백
 				//
 
 				if (trans != null)
@@ -118,11 +137,19 @@ namespace AuthServer
 
 		public string SystemInfo()
 		{
+			//
+			// 시스템세팅 조회
+			//
+
 			List<SystemSetting> systemSettingList = systemSettings.ToList();
 			if (systemSettingList.Count <= 0)
 				throw new Exception("Not exist SystemSetting");
 
-			List<GameServer> gameServerList = gameServers.ToList();
+			//
+			// 게임서버 조회
+			//
+
+			List<GameServer> gameServerList = gameServers.OrderBy(r => r.gameServerId).ToList();
 
 			SystemInfoTemplate template = new SystemInfoTemplate();
 			template.systemSetting = systemSettingList.First();
@@ -134,6 +161,30 @@ namespace AuthServer
 			}
 
 			return JsonSerializer.Serialize(template);
+		}
+
+		//
+		// MetaData
+		//
+
+		public string MetaData()
+		{
+			//
+			// 시스템세팅 조회
+			//
+
+			List<SystemSetting> systemSettingList = systemSettings.ToList();
+			if (systemSettingList.Count <= 0)
+				throw new Exception("Not exist SystemSetting");
+
+			//
+			// 메타데이터 버전 확인및 데이터 로드
+			//
+
+			int nMetaDataVersion = systemSettingList.First().metadataVersion;
+			systemSettingList.Clear();
+
+			return MetaDataManager.GetMetaData(nMetaDataVersion, this);
 		}
 	}
 }
