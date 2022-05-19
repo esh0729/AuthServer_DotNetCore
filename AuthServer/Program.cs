@@ -17,7 +17,7 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-	app.Urls.Add("http://172.21.42.55:" + AppConfig.instance.ServicePort);
+	app.Urls.Add("http://172.22.74.12:" + AppConfig.instance.ServicePort);
 	app.Urls.Add("http://localhost:" + AppConfig.instance.ServicePort);
 }
 
