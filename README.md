@@ -8,5 +8,5 @@
 요청 설명
 - 각 요청에 대응하는 URI를 호출하여 데이터 요청
 - SystemInfo : 시스템 관련 데이트 요청(GET)
-- metadat : 인게임 메타데이터 요청(GET)
+- metadata : 인게임 메타데이터 요청(GET)
 - login : 게임서버에 접속할 accessToken 요청, 접근시 id 필요(POST)
