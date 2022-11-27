@@ -212,7 +212,7 @@ namespace AuthServer
 			// 메타데이터 버전 확인및 데이터 로드
 			//
 
-			int nMetaDataVersion = systemSettingList.First().metadataVersion;
+			int nMetaDataVersion = systemSettingList.First().metaDataVersion;
 
 			return MetaDataManager.GetMetaData(nMetaDataVersion, this);
 		}

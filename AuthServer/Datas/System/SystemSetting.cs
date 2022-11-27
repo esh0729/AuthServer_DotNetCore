@@ -9,6 +9,6 @@ namespace AuthServer
 	public class SystemSetting
 	{
 		[Required]
-		public int metadataVersion { get; set; }
+		public int metaDataVersion { get; set; }
 	}
 }
